@@ -27,6 +27,17 @@ public class P7_Binary_Tree_Find_Diameter {
     }
   }
 
+  static class TreePair {
+
+    public int diameter;
+    public int height;
+
+    TreePair(int diameter, int height) {
+      this.diameter = diameter;
+      this.height = height;
+    }
+  }
+
   public static void main(String[] args) {
     int[] nums = {
       2,
@@ -72,19 +83,22 @@ public class P7_Binary_Tree_Find_Diameter {
   }
 
   private static int diameterOfBinaryTree(BinaryTreeNode root) {
-    int[] diameter = new int[1];
-    diameter[0] = Integer.MIN_VALUE;
-    diameterBinaryTreeHelper(root, diameter);
-    return diameter[0] + 1;
+    TreePair pair = diameterBinaryTreeHelper(root);
+    return pair.diameter;
   }
 
-  private static int diameterBinaryTreeHelper(BinaryTreeNode root, int[] max) {
+  private static TreePair diameterBinaryTreeHelper(BinaryTreeNode root) {
     if (root == null) {
-      return 0;
+      return new TreePair(0, 0);
     }
-    int lh = diameterBinaryTreeHelper(root.left, max);
-    int rh = diameterBinaryTreeHelper(root.right, max);
-    max[0] = Math.max(max[0], lh + rh);
-    return Math.max(lh, rh) + 1;
+    TreePair lPair = diameterBinaryTreeHelper(root.left);
+    TreePair rPair = diameterBinaryTreeHelper(root.right);
+
+    int diaOp1 = lPair.diameter;
+    int diaOp2 = rPair.diameter;
+    int diaOp3 = lPair.height + rPair.height + 1;
+    int maxDiameter = Math.max(diaOp1, Math.max(diaOp2, diaOp3));
+    int maxHeight = Math.max(lPair.height, rPair.height) + 1;
+    return new TreePair(maxDiameter, maxHeight);
   }
 }
