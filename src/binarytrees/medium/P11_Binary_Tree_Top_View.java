@@ -53,13 +53,13 @@ public class P11_Binary_Tree_Top_View {
     }
 
     private static Node createTree(int[] arr, int index) {
-        if (arr[index] == -1) {
-            return null;
-        }
-        Node root = new Node(arr[index]);
+        Node root = null;
         if (index < arr.length) {
-            root.left = createTree(arr, 2 * index + 1);
-            root.right = createTree(arr, 2 * index + 2);
+            root = arr[index] != -1 ? new Node(arr[index]) : null;
+            if (root != null) {
+                root.left = createTree(arr, 2 * index + 1);
+                root.right = createTree(arr, 2 * index + 2);
+            }
         }
         return root;
     }
